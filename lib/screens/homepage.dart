@@ -1,7 +1,24 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:moru_intern/models/weather_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final List<Weather> allWeather = [];
+
+  Future<Weather> weatherResponse() async {
+    Dio dio = Dio();
+    final response = await dio.get(
+        'http://api.weatherapi.com/v1/current.json?key=928250315ded4a7f8b640619231607&q=London&aqi=no');
+    final weatherDatas = Weather.fromJson(response.data);
+    return weatherDatas;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +56,16 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          FutureBuilder(
+            future: weatherResponse(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data!.current.wind_dir);
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
           )
         ],
       ),

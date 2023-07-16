@@ -16,12 +16,12 @@ class Location {
   String country;
   double lat;
   double lon;
-  String tzId;
-  int localtimeEpoch;
+  String tz_id;
+  int localtime_epoch;
   String localtime;
 
-  Location(this.name, this.region, this.country, this.lat, this.lon, this.tzId,
-      this.localtimeEpoch, this.localtime);
+  Location(this.name, this.region, this.country, this.lat, this.lon, this.tz_id,
+      this.localtime_epoch, this.localtime);
 
   factory Location.fromJson(Map<String, dynamic> locationData) {
     return Location(
@@ -30,87 +30,87 @@ class Location {
         locationData['country'],
         locationData['lat'],
         locationData['lat'],
-        locationData['tzId'],
-        locationData['localtimeEpoch'],
+        locationData['tz_id'],
+        locationData['localtime_epoch'],
         locationData['localtime']);
   }
 }
 
 class Current {
-  int lastUpdatedEpoch;
-  String lastUpdated;
-  int tempC;
-  int tempF;
-  int isDay;
+  int last_updated_epoch;
+  String last_updated;
+  double temp_c;
+  double temp_f;
+  int is_day;
   Condition condition;
-  double windMph;
-  double windKph;
-  int windDegree;
-  String windDir;
-  int pressureMb;
-  double pressureIn;
-  double precipMm;
-  int precipIn;
+  double wind_mph;
+  double wind_kph;
+  int wind_degree;
+  String wind_dir;
+  double pressure_mb;
+  double pressure_in;
+  double precip_mm;
+  double precip_in;
   int humidity;
   int cloud;
-  double feelslikeC;
-  double feelslikeF;
-  int visKm;
-  int visMiles;
-  int uv;
-  double gustMph;
-  double gustKph;
+  double feelslike_c;
+  double feelslike_f;
+  double vis_km;
+  double vis_miles;
+  double uv;
+  double gust_mph;
+  double gust_kph;
 
   Current(
-      this.lastUpdatedEpoch,
-      this.lastUpdated,
-      this.tempC,
-      this.tempF,
-      this.isDay,
+      this.last_updated_epoch,
+      this.last_updated,
+      this.temp_c,
+      this.temp_f,
+      this.is_day,
       this.condition,
-      this.windMph,
-      this.windKph,
-      this.windDegree,
-      this.windDir,
-      this.pressureMb,
-      this.pressureIn,
-      this.precipMm,
-      this.precipIn,
+      this.wind_mph,
+      this.wind_kph,
+      this.wind_degree,
+      this.wind_dir,
+      this.pressure_mb,
+      this.pressure_in,
+      this.precip_mm,
+      this.precip_in,
       this.humidity,
       this.cloud,
-      this.feelslikeC,
-      this.feelslikeF,
-      this.visKm,
-      this.visMiles,
+      this.feelslike_c,
+      this.feelslike_f,
+      this.vis_km,
+      this.vis_miles,
       this.uv,
-      this.gustMph,
-      this.gustKph);
+      this.gust_mph,
+      this.gust_kph);
 
   factory Current.fromJson(Map<String, dynamic> currentData) {
     return Current(
-        currentData['lastUpdatedEpoch'],
-        currentData['lastUpdated'],
-        currentData['tempC'],
-        currentData['tempF'],
-        currentData['isDay'],
+        currentData['last_updated_epoch'],
+        currentData['last_updated'],
+        currentData['temp_c'],
+        currentData['temp_f'],
+        currentData['is_day'],
         Condition.fromJson(currentData['condition']),
-        currentData['windMph'],
-        currentData['windKph'],
-        currentData['windDegree'],
-        currentData['windDir'],
-        currentData['pressureMb'],
-        currentData['pressureIn'],
-        currentData['precipMm'],
-        currentData['precipIn'],
+        currentData['wind_mph'],
+        currentData['wind_kph'],
+        currentData['wind_degree'],
+        currentData['wind_dir'],
+        currentData['pressure_mb'],
+        currentData['pressure_in'],
+        currentData['precip_mm'],
+        currentData['precip_in'],
         currentData['humidity'],
         currentData['cloud'],
-        currentData['feelslikeC'],
-        currentData['feelslikeF'],
-        currentData['visKm'],
-        currentData['visMiles'],
+        currentData['feelslike_c'],
+        currentData['feelslike_f'],
+        currentData['vis_km'],
+        currentData['vis_miles'],
         currentData['uv'],
-        currentData['gustMph'],
-        currentData['gustKph']);
+        currentData['gust_mph'],
+        currentData['gust_kph']);
   }
 }
 
