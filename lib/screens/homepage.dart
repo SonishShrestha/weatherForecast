@@ -7,15 +7,38 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Weather Forecast'),
+        title: const Text(
+          'Weather Forecast',
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.grey,
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Expanded(child: TextField()),
-              ElevatedButton(onPressed: () {}, child: Text('save'))
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Container(
+                        child: TextField(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                ))),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text('save'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.grey)),
+                ),
+              ],
+            ),
           )
         ],
       ),

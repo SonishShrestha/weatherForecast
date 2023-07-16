@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Moru Intern',
       home: HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
