@@ -52,7 +52,7 @@ class Current {
   double precip_mm;
   double precip_in;
   int humidity;
-  int cloud;
+  int? cloud;
   double feelslike_c;
   double feelslike_f;
   double vis_km;
