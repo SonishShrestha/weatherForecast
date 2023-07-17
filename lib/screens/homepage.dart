@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:moru_intern/models/weather_model.dart';
+import 'package:moru_intern/screens/frontPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,6 +30,17 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
         backgroundColor: Colors.grey,
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) {
+                    return FrontPage();
+                  },
+                ));
+              },
+              child: Text('Help Screen'))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -38,8 +50,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Expanded(
-                      child: Container(
-                          child: TextField(
+                      child: TextField(
                     controller: locationSearchController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -47,14 +58,14 @@ class _HomePageState extends State<HomePage> {
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20)),
                     ),
-                  ))),
+                  )),
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
                       data = locationSearchController.text;
                       setState(() {});
                     },
-                    child: Text('save'),
+                    child: const Text('save'),
                     style: ButtonStyle(
                         backgroundColor: MaterialStateColor.resolveWith(
                             (states) => Colors.grey)),
@@ -62,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             FutureBuilder<Weather>(
               future: weatherResponse('$data'),
               builder: (context, snapshot) {
@@ -80,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               },
             )
