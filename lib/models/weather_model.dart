@@ -29,7 +29,7 @@ class Location {
         locationData['region'],
         locationData['country'],
         locationData['lat'],
-        locationData['lat'],
+        locationData['lon'],
         locationData['tz_id'],
         locationData['localtime_epoch'],
         locationData['localtime']);

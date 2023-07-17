@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:moru_intern/models/weather_model.dart';
 import 'package:moru_intern/screens/frontPage.dart';
+import 'package:moru_intern/screens/weathernow.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,8 +23,11 @@ class _HomePageState extends State<HomePage> {
     return weatherDatas;
   }
 
+  List searchData = [];
+
   @override
   Widget build(BuildContext context) {
+    print(searchData);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -32,70 +37,211 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey,
         actions: [
           ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) {
-                    return FrontPage();
-                  },
-                ));
-              },
-              child: Text('Help Screen'))
+            onPressed: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return const FrontPage();
+                },
+              ));
+            },
+            child: const Text('Help Screen'),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => const Color.fromARGB(255, 99, 96, 96))),
+          )
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    controller: locationSearchController,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                  )),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      data = locationSearchController.text;
-                      setState(() {});
-                    },
-                    child: const Text('save'),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.grey)),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            FutureBuilder<Weather>(
-              future: weatherResponse('$data'),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: Row(
                     children: [
-                      Image.network(
-                        snapshot.data!.current.condition.icon,
-                        width: 44,
-                        height: 44,
-                        fit: BoxFit.cover,
+                      Expanded(
+                        child: TextFormField(
+                          controller: locationSearchController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
                       ),
-                      Text(snapshot.data!.current.temp_c.toString()),
-                      Text(snapshot.data!.current.condition.text),
+                      const SizedBox(width: 20),
+                      Container(
+                        width: 100,
+                        child: DropdownSearch(
+                          items: searchData.map((e) {
+                            return e;
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              locationSearchController.text = newValue;
+                            });
+                          },
+                        ),
+                      ),
+                      // DropdownButton(
+                      //   value: dropdownvalue,
+                      //   icon: const Icon(Icons.arrow_downward),
+                      //   items: searchData.map((e) {
+                      //     return DropdownMenuItem(
+                      //         value: e.toString(), child: Text(e));
+                      //   }).toList(),
+                      //   onChanged: (String? newvalue) {
+                      //     setState(() {
+                      //       dropdownvalue = newvalue!;
+                      //     });
+                      //   },
+                      // ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          data = locationSearchController.text;
+                          if (searchData.contains(data)) {
+                          } else {
+                            searchData.add(data!);
+                          }
+
+                          setState(() {});
+                        },
+                        child: const Text('save'),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.grey)),
+                      ),
                     ],
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
-            )
-          ],
+                  ),
+                ),
+              ),
+              FutureBuilder<Weather>(
+                future: weatherResponse('$data'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      width: double.infinity,
+                      height: 400,
+                      color: Colors.grey,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 40, horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              snapshot.data!.location.country,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Today , ${snapshot.data!.location.localtime}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            Image.network(
+                              snapshot.data!.current.condition.icon,
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
+                            Text(
+                              snapshot.data!.current.temp_c.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 40),
+                            ),
+                            Text(
+                              snapshot.data!.current.condition.text,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              FutureBuilder<Weather>(
+                future: weatherResponse('$data'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        const Text(
+                          'Weather Now',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20),
+                        ),
+                        SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            WeatherNow(
+                              name: 'Wind',
+                              data:
+                                  '${snapshot.data!.current.wind_kph.toString()} km/h',
+                              icons: Icons.wind_power_outlined,
+                            ),
+                            WeatherNow(
+                              name: 'Wind',
+                              data:
+                                  '${snapshot.data!.current.wind_mph.toString()} mp/h',
+                              icons: Icons.wind_power_outlined,
+                            ),
+                            WeatherNow(
+                              name: 'Humidity',
+                              data: '${snapshot.data!.current.humidity}%',
+                              icons: Icons.water_drop,
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            WeatherNow(
+                              name: 'latitude',
+                              data: '${snapshot.data!.location.lat}',
+                            ),
+                            WeatherNow(
+                              name: 'Longitute',
+                              data: '${snapshot.data!.location.lon}',
+                            ),
+                            WeatherNow(
+                              name: 'Wind Degree',
+                              data: '${snapshot.data!.current.wind_degree}°',
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
