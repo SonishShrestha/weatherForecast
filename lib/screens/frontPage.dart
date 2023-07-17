@@ -14,8 +14,8 @@ class _FrontPageState extends State<FrontPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
-      Navigator.push(
+    Timer(Duration(seconds: 5), () async {
+      await Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomePage()));
     });
   }

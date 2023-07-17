@@ -79,7 +79,6 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         width: 100,
                         child: DropdownSearch(
-                          enabled: true,
                           items: searchData.map((e) {
                             return e;
                           }).toList(),
@@ -130,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Container(
-                      width: double.infinity,
+                      width: MediaQuery.of(context).size.width,
                       height: 400,
                       color: Colors.grey,
                       child: Container(
@@ -154,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Image.network(
-                              snapshot.data!.current.condition.icon,
+                              "https:${snapshot.data!.current.condition.icon}",
                               width: 200,
                               height: 200,
                               fit: BoxFit.cover,
