@@ -44,10 +44,10 @@ class _HomePageState extends State<HomePage> {
                 },
               ));
             },
-            child: const Text('Help Screen'),
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith(
                     (states) => const Color.fromARGB(255, 99, 96, 96))),
+            child: const Text('Help Screen'),
           )
         ],
       ),
@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         width: 100,
                         child: DropdownSearch(
+                          enabled: true,
                           items: searchData.map((e) {
                             return e;
                           }).toList(),
@@ -113,10 +114,12 @@ class _HomePageState extends State<HomePage> {
 
                           setState(() {});
                         },
-                        child: const Text('save'),
                         style: ButtonStyle(
                             backgroundColor: MaterialStateColor.resolveWith(
                                 (states) => Colors.grey)),
+                        child: locationSearchController.text.isEmpty
+                            ? Text('Save')
+                            : Text('Update'),
                       ),
                     ],
                   ),
@@ -220,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             WeatherNow(
-                              name: 'latitude',
+                              name: 'Latitude',
                               data: '${snapshot.data!.location.lat}',
                             ),
                             WeatherNow(
@@ -236,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return Text('Location Not Found');
                   }
                 },
               )

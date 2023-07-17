@@ -33,17 +33,27 @@ class _FrontPageState extends State<FrontPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('We show weather for you'),
+            const Text(
+              'We show weather for you',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) {
                       return const HomePage();
                     },
-                  ));
-                },
-                child: const Text('Skip'))
+                  ),
+                );
+              },
+              child: const Text('Skip'),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.amber)),
+            )
           ],
         ),
       ),
