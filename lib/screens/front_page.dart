@@ -13,9 +13,11 @@ class _FrontPageState extends State<FrontPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () async {
-      await Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    Timer(const Duration(seconds: 5), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+      }
     });
   }
 

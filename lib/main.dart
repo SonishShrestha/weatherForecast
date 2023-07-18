@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moru_intern/screens/front_page.dart';
-import 'package:moru_intern/screens/home_page.dart';
 
 void main() {
   runApp(const MyApp());
