@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:moru_intern/screens/homepage.dart';
+import 'package:moru_intern/screens/home_page.dart';
 
 class FrontPage extends StatefulWidget {
   const FrontPage({super.key});
@@ -14,9 +13,9 @@ class _FrontPageState extends State<FrontPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () async {
+    Timer(const Duration(seconds: 5), () async {
       await Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
     });
   }
 
@@ -37,7 +36,7 @@ class _FrontPageState extends State<FrontPage> {
               'We show weather for you',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(
@@ -49,10 +48,10 @@ class _FrontPageState extends State<FrontPage> {
                   ),
                 );
               },
-              child: const Text('Skip'),
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateColor.resolveWith((states) => Colors.amber)),
+              child: const Text('Skip'),
             )
           ],
         ),

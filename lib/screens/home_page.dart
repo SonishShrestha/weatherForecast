@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:moru_intern/models/weather_model.dart';
-import 'package:moru_intern/screens/frontPage.dart';
-import 'package:moru_intern/screens/weathernow.dart';
+import 'package:moru_intern/screens/front_page.dart';
+import 'package:moru_intern/screens/weather_now.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,16 +18,16 @@ class _HomePageState extends State<HomePage> {
   Future<Weather> weatherResponse(String locationName) async {
     Dio dio = Dio();
     final response = await dio.get(
-        'http://api.weatherapi.com/v1/current.json?key=928250315ded4a7f8b640619231607&q=${locationName}&aqi=no');
+        'http://api.weatherapi.com/v1/current.json?key=928250315ded4a7f8b640619231607&q=$locationName&aqi=no');
     final weatherDatas = Weather.fromJson(response.data);
     return weatherDatas;
   }
 
   List searchData = [];
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    print(searchData);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -65,20 +65,37 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextFormField(
-                          controller: locationSearchController,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                        child: Form(
+                          key: formKey,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter Current Location';
+                              } else {
+                                return null;
+                              }
+                            },
+                            controller: locationSearchController,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 20),
-                      Container(
+                      SizedBox(
                         width: 100,
                         child: DropdownSearch(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  labelText: "Location")),
                           items: searchData.map((e) {
                             return e;
                           }).toList(),
@@ -110,6 +127,7 @@ class _HomePageState extends State<HomePage> {
                           } else {
                             searchData.add(data!);
                           }
+                          if (formKey.currentState!.validate()) {}
 
                           setState(() {});
                         },
@@ -117,8 +135,8 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: MaterialStateColor.resolveWith(
                                 (states) => Colors.grey)),
                         child: locationSearchController.text.isEmpty
-                            ? Text('Save')
-                            : Text('Update'),
+                            ? const Text('Save')
+                            : const Text('Update'),
                       ),
                     ],
                   ),
@@ -159,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                               fit: BoxFit.cover,
                             ),
                             Text(
-                              snapshot.data!.current.temp_c.toString(),
+                              '${snapshot.data!.current.temp_c.toString()}°',
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -194,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.black,
                               fontSize: 20),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -217,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                             )
                           ],
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -238,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     );
                   } else {
-                    return Text('Location Not Found');
+                    return const Text('Location Not Found');
                   }
                 },
               )
