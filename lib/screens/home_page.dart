@@ -124,10 +124,10 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           data = locationSearchController.text;
                           if (searchData.contains(data)) {
+                            formKey.currentState!.validate();
                           } else {
                             searchData.add(data!);
                           }
-                          if (formKey.currentState!.validate()) {}
 
                           setState(() {});
                         },
