@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moru_intern/screens/homepage.dart';
+import 'package:moru_intern/screens/front_page.dart';
+import 'package:moru_intern/screens/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Moru Intern',
-      home: HomePage(),
+      home: FrontPage(),
       debugShowCheckedModeBanner: false,
     );
   }
