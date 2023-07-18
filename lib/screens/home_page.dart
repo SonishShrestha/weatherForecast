@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? data;
   TextEditingController locationSearchController = TextEditingController();
+
   Future<Weather> weatherResponse(String locationName) async {
     Dio dio = Dio();
     final response = await dio.get(
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           'Weather Forecast',
         ),
         centerTitle: true,
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.black,
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -45,15 +46,25 @@ class _HomePageState extends State<HomePage> {
               ));
             },
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => const Color.fromARGB(255, 99, 96, 96))),
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black)),
             child: const Text('Help Screen'),
           )
         ],
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.all(20),
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.center,
+              colors: [
+                Colors.deepOrange,
+                Color.fromARGB(255, 78, 56, 117),
+              ],
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -124,16 +135,16 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           data = locationSearchController.text;
                           if (searchData.contains(data)) {
-                            formKey.currentState!.validate();
                           } else {
                             searchData.add(data!);
                           }
+                          if (formKey.currentState!.validate()) {}
 
                           setState(() {});
                         },
                         style: ButtonStyle(
                             backgroundColor: MaterialStateColor.resolveWith(
-                                (states) => Colors.grey)),
+                                (states) => Colors.black)),
                         child: locationSearchController.text.isEmpty
                             ? const Text('Save')
                             : const Text('Update'),
@@ -146,10 +157,9 @@ class _HomePageState extends State<HomePage> {
                 future: weatherResponse('$data'),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Container(
+                    return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 400,
-                      color: Colors.grey,
                       child: Container(
                         margin: const EdgeInsets.symmetric(
                             vertical: 40, horizontal: 20),
@@ -199,66 +209,69 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               const SizedBox(height: 20),
-              FutureBuilder<Weather>(
-                future: weatherResponse('$data'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        const Text(
-                          'Weather Now',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 20),
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            WeatherNow(
-                              name: 'Wind',
-                              data:
-                                  '${snapshot.data!.current.wind_kph.toString()} km/h',
-                              icons: Icons.wind_power_outlined,
-                            ),
-                            WeatherNow(
-                              name: 'Wind',
-                              data:
-                                  '${snapshot.data!.current.wind_mph.toString()} mp/h',
-                              icons: Icons.wind_power_outlined,
-                            ),
-                            WeatherNow(
-                              name: 'Humidity',
-                              data: '${snapshot.data!.current.humidity}%',
-                              icons: Icons.water_drop,
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            WeatherNow(
-                              name: 'Latitude',
-                              data: '${snapshot.data!.location.lat}',
-                            ),
-                            WeatherNow(
-                              name: 'Longitute',
-                              data: '${snapshot.data!.location.lon}',
-                            ),
-                            WeatherNow(
-                              name: 'Wind Degree',
-                              data: '${snapshot.data!.current.wind_degree}°',
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  } else {
-                    return const Text('Location Not Found');
-                  }
-                },
+              Container(
+                margin: const EdgeInsets.all(20),
+                child: FutureBuilder<Weather>(
+                  future: weatherResponse('$data'),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          const Text(
+                            'Weather Now',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 20),
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              WeatherNow(
+                                name: 'Wind',
+                                data:
+                                    '${snapshot.data!.current.wind_kph.toString()} km/h',
+                                icons: Icons.wind_power_outlined,
+                              ),
+                              WeatherNow(
+                                name: 'Wind',
+                                data:
+                                    '${snapshot.data!.current.wind_mph.toString()} mp/h',
+                                icons: Icons.wind_power_outlined,
+                              ),
+                              WeatherNow(
+                                name: 'Humidity',
+                                data: '${snapshot.data!.current.humidity}%',
+                                icons: Icons.water_drop,
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              WeatherNow(
+                                name: 'Latitude',
+                                data: '${snapshot.data!.location.lat}',
+                              ),
+                              WeatherNow(
+                                name: 'Longitute',
+                                data: '${snapshot.data!.location.lon}',
+                              ),
+                              WeatherNow(
+                                name: 'Wind Degree',
+                                data: '${snapshot.data!.current.wind_degree}°',
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const Text('Location Not Found');
+                    }
+                  },
+                ),
               )
             ],
           ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moru_intern/providers/weather_provider.dart';
 import 'package:moru_intern/screens/front_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,10 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Moru Intern',
-      home: FrontPage(),
-      debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<WeatherProvider>(
+            create: (_) => WeatherProvider())
+      ],
+      child: const MaterialApp(
+        title: 'Moru Intern',
+        home: FrontPage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
