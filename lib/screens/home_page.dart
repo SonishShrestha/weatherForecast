@@ -208,7 +208,6 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.all(20),
                 child: FutureBuilder<Weather>(
